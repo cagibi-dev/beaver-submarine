@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://items/bubble.png" type="Texture" id=1]
+[ext_resource path="res://items/FishExplosion.gd" type="Script" id=2]
+[ext_resource path="res://enemies/explode.wav" type="AudioStream" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=2]
+light_mode = 1
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.211921, 0.463576, 0.741722, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 0.835294, 0, 1, 0.964844, 0.0188446, 0.351422, 1, 0.216797, 0, 0.75, 1, 0, 0, 0, 1 )
+
+[node name="FishExplosion" type="Node2D"]
+material = SubResource( 2 )
+z_index = 20
+script = ExtResource( 2 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+use_parent_material = true
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+spread = 180.0
+gravity = Vector2( 0, -10 )
+initial_velocity = 80.0
+initial_velocity_random = 0.5
+damping = 100.0
+angle = 45.0
+scale_amount = 8.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 1 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+pitch_scale = 0.5
+autoplay = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Bubbles" type="CPUParticles2D" parent="."]
+use_parent_material = true
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+texture = ExtResource( 1 )
+spread = 180.0
+gravity = Vector2( 0, -120 )
+initial_velocity = 50.0
+damping = 100.0
+scale_amount = 0.2
+scale_amount_random = 0.5
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
